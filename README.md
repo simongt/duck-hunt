@@ -1,4 +1,4 @@
-# jQuery: Duck-Hunt lab using jQuery!
+# DOM Manipulation: Duck-Hunt using Vanilla JavaScript!
 
 ## Introduction
 
@@ -6,7 +6,7 @@
 
 Ok, projects are coming up so lets keep building games!
 
-For this lab, you'll be building the classic nintendo game, DUCK HUNT, using HTML, CSS, and jQuery.
+For this lab, you'll be building the classic nintendo game, DUCK HUNT, using HTML, CSS, and Vanilla JavaScript.
 
 ## Exercise
 

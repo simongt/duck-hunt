@@ -1,54 +1,85 @@
-$(function () {
-  // I'll do some of the work for you, first I will grab the <body></body>
-  const $body = $('body');
+/* The window object in JavaScript has an event handler called onload. When this event handler is used, the entire page and all of its related files and components are loaded before the function listed in the onload event handler is executed, hence the term "on load." */
+window.onload = () => {
 
-  // 1. Create a <div> with the class "duck" and add it to the body.
+  // TO-DO: create landing page or modal to start game (add difficulty levels?)
 
-  // 2. Next, use setInterval to toggle the "flap" class on the duck every 250 ms (1/4 second)
+  // TO-DO: animate the classic dog intro
 
-  // 3. Fantastic!  Now, let's move the duck using CSS "top" and "left". Create
-  // a function `moveDuck` that takes a duck object as an argument and sets the
-  // "top" and "left" CSS properties.
-  // HINT: Use Math.random() * window.innerWidth    for "left"
-  //       And Math.random() * window.innerHeight   for "top"
+  // TO-DO: create button to toggle sound (enable/disable)
 
-  // 4. Try making the duck move to a different location every second
+  // const game_start = new Audio("audio/start-round.mp3");
+  // game_start.play();
 
-  // 5. Congratulations! Move on to part 2!
+  // duck generator function
+  function createDuck() {
+    // create a div container for the duck
+    // add the "duck" class to it
+    // append it to the body
+    const duck = document.createElement("div");
+    duck.classList.add("duck");
+    document.body.append(duck);
 
-  // ---------------------------- PART 2 ---------------------------------
+    // toggle the "flap" class on the duck every 200 ms (1/5 second)
+    setInterval(() => {
+      duck.classList.toggle("flap");
+    }, (Math.random() * 200) + 100);
 
-  // 6. Things are getting a bit messy. Let's create
-  //    a "function" called createDuck() that does everything in 1-4
-  //    and "returns" the duck object
+    // move the newly created duck to a random location
+    let medialPosition = Math.random() * window.innerHeight;
+    let lateralPosition = Math.random() * window.innerWidth;
+    duck.style.top = `${medialPosition}px`;
+    duck.style.left = `${lateralPosition}px`;
 
-  // 7. Now, let's create lots of ducks!  Use a "for" loop to create 5 ducks
-  //    using our fancy new createDuck() function
+    // move the duck to a new location every second or so
+    // ducks keep moving by using setInterval instead of setTimeout
+    setInterval(() => {
+      const newMedialPosition = Math.random() * window.innerHeight;
+      const newLateralPosition = Math.random() * window.innerWidth;
+      // add and remove the "right" class to the duck based on the direction the duck is flying, thus shifting the direction the duck is facing
+      if (lateralPosition < newLateralPosition) {
+        duck.classList.add("right");
+      } else {
+        duck.classList.remove("right");
+      }
+      // update position of duck to new coordinates
+      duck.style.top = `${newMedialPosition}px`;
+      duck.style.left = `${newLateralPosition}px`;
+    }, (Math.random() * 1500) + 500);
 
+    // attach a "click" event handler that adds the "shot" class to the duck when you click on it!
+    duck.addEventListener("click", function (event) {
+      event.target.classList.add("shot");
+      setTimeout(() => {
+        duck.parentNode.removeChild(duck);
+        checkForWinner();
+      }, 500);
+    });
 
-  // 8. Uh oh, our ducks are overlapping.  Modify createDuck so each time
-  //     it creates a duck, it appears in a random location
-  // HINT: You may want to create a `randomPosition()` function that you can use
-  //       to set the ducks' initial locations and in your `moveDuck()` function;
+    return duck;
+  }
+  // read the DOM to see if there are any ducks left
 
-  // 9. Keep going! Move onto part 3!
+  function checkForWinner() {
+    const ducks = document.querySelectorAll(".duck");
 
-  // --------------------------- PART 3 ------------------------------------
+    console.log(ducks, ducks.length);
 
-  // 11. BOOM. Attach a "click" handler that adds the "shot" class to
-  //     the duck when you click on it!
+    if (ducks.length === 0) {
+      alert("You Win! Press OK to play again.");
+      for (let i = 0; i < (Math.random() * 7) + 3; i++) {
+        createDuck();
+      }
+    }
 
-  // 12. After a duck has been clicked on, remove it from the DOM after
-  //     a short delay (1 second)
+  }
 
-  // 13. Create a new function named checkForWinner() that reads the DOM
-  //     to see if there are any ducks left. If not, alert "YOU WIN!"
+  // BONUS: The ducks are moving pretty erratically, can you think
+  // of a way to adjust the ducks speed based on how far needs to move?
 
-  // 14. BONUS: The ducks are moving pretty erratically, can you think
-  //     of a way to adjust the ducks speed based on how far needs to move?
-
-  // 15. BONUS: Add the "left" and "right" class to the duck based on the
-  //     direction the duck is flying
+  // creates random number of ducks from 3 to 10
+  for (let i = 0; i < (Math.random() * 7) + 3; i++) {
+    createDuck();
+  }
 
   // FIN. You win 1 trillion tokens.  Play the day away!
-});
+};
