@@ -5,7 +5,7 @@ html {
   margin: 0;
   background-image: url(images/background.png);
   background-size: cover;
-  background-position: center;
+  background-position: bottom;
   image-rendering: optimizeSpeed;
   image-rendering: -moz-crisp-edges;
   image-rendering: -o-crisp-edges;
@@ -46,3 +46,52 @@ html {
   background-position: center;
   background-image: url(images/shot.png);
 }
+
+.dog {
+  position: absolute;
+  background-image: url(images/duckhunt.png);
+  background-position: -24px 0px;
+  width: 171px;
+  height: 150px;
+  transition: top 0.1s, left 0.1s;
+  -webkit-transition-timing-function: ease-out;
+     -moz-transition-timing-function: ease-out;
+       -o-transition-timing-function: ease-out;
+          transition-timing-function: ease-out;
+  background-repeat: no-repeat;
+}
+
+.dog.sniff {
+  background-position: -207px 0px;
+  width: 171px;
+  height: 150px;
+}
+
+.dog.lift-left-leg {
+  background-position: -386px 0px;
+  width: 171px;
+  height: 150px;
+}
+
+.dog.lift-right-leg {
+  background-position: -567px 0px;
+  width: 171px;
+  height: 150px;
+}
+
+.dog.surprise {
+  background-position: -747px 0px;
+  width: 171px;
+  height: 150px;
+}
+
+.dog.leap-into-bushes {
+  background-position: -932px 0px;
+  width: 120px;
+  height: 150px;
+}
+
+.dog.happy {
+  background-position: -1063px 0px;
+}
+
