@@ -15,8 +15,8 @@ window.onload = () => {
   function createDog() {
     const dog = document.createElement('div');
 
-    let target = (window.innerWidth - 200) / 2;
-    let current = -200;
+    let target = (window.innerWidth - 171) / 2;
+    let current = -171;
     let timeMultiplier = 1;
 
     dog.classList.add('dog');
@@ -275,7 +275,7 @@ window.onload = () => {
   for (let i = 0; i < (Math.random() * 7) + 3; i++) {
     setTimeout(() => {
       createDuck();
-    }, 6000);
+    }, 6500);
   }
 
   // FIN. You win 1 trillion tokens.  Play the day away!

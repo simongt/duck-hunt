@@ -53,7 +53,7 @@ html {
   background-position: -24px 0px;
   width: 171px;
   height: 150px;
-  transition: top 0.1s, left 0.1s;
+  transition: top 0s, left 0s;
   -webkit-transition-timing-function: ease-out;
      -moz-transition-timing-function: ease-out;
        -o-transition-timing-function: ease-out;
