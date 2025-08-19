@@ -1,30 +1,64 @@
-// TO-DO: create landing page or modal to (indicate) start game (add difficulty levels?)
+/**
+ * Duck Hunt Game - Classic Nintendo Game Clone
+ * 
+ * This is a vanilla JavaScript implementation of the classic Duck Hunt game.
+ * The game features animated ducks, a hunting dog, and click-to-shoot mechanics.
+ * 
+ * @author Unknown
+ * @version 1.0.0
+ * @since 2023
+ */
 
-// TO-DO: animate the classic dog intro
+// TODO: create landing page or modal to (indicate) start game (add difficulty levels?)
+// TODO: animate the classic dog intro
+// TODO: create button to toggle sound (enable/disable)
+// TODO: implement asynchronous code, instead of callback hell (setInterval and setTimeout) 
+// https://medium.com/front-end-hacking/callbacks-promises-and-async-await-ad4756e01d90
 
-// TO-DO: create button to toggle sound (enable/disable)
-
-// TO-DO: implement asynchronous code, instead of callback hell (setInterval and setTimeout) https://medium.com/front-end-hacking/callbacks-promises-and-async-await-ad4756e01d90
-
-/* The window object in JavaScript has an event handler called onload. When this event handler is used, the entire page and all of its related files and components are loaded before the function listed in the onload event handler is executed, hence the term 'on load.' */
+/**
+ * Main game initialization function
+ * Executes when the window loads to set up the game environment
+ * 
+ * ANTI-PATTERN: Using window.onload instead of DOMContentLoaded or modern event listeners
+ * ANTI-PATTERN: No error handling for audio loading
+ * ANTI-PATTERN: Global scope pollution with all game logic
+ */
 window.onload = () => {
-
+  // Initialize game audio
   const game_start = new Audio('audio/start-round.mp3');
-  game_start.play();
+  game_start.play(); // ANTI-PATTERN: No error handling for audio failure
 
+  /**
+   * Creates and animates the hunting dog character
+   * 
+   * The dog walks across the screen, sniffs, and then leaps into bushes
+   * 
+   * ANTI-PATTERNS:
+   * - Massive callback hell with nested setInterval/setTimeout
+   * - Hardcoded pixel values and magic numbers
+   * - No cleanup of intervals (memory leak)
+   * - Repetitive code blocks
+   * - DOM manipulation without error handling
+   * 
+   * @returns {HTMLElement} The created dog element
+   */
   function createDog() {
     const dog = document.createElement('div');
 
-    let target = (window.innerWidth - 171) / 2;
+    // Calculate dog movement parameters
+    let target = (window.innerWidth - 171) / 2; // ANTI-PATTERN: Magic number 171
     let current = -171;
     let timeMultiplier = 1;
 
+    // Set up dog element
     dog.classList.add('dog');
     dog.style.top = `0`;
     dog.style.left = `-171px`;
 
     document.body.append(dog);
 
+    // ANTI-PATTERN: Nested setInterval creates callback hell
+    // This entire block should be refactored into a state machine or animation system
     setInterval(() => {
       setInterval(() => {
         setTimeout(() => {
@@ -190,13 +224,15 @@ window.onload = () => {
       }, timeMultiplier * 900);
     }, 1200);
 
+    // ANTI-PATTERN: Another setInterval for responsive positioning
+    // This should use ResizeObserver or CSS media queries instead
     let backgroundIsScaledUp;
     setInterval(() => {
-      backgroundIsScaledUp = window.innerHeight > 558;
+      backgroundIsScaledUp = window.innerHeight > 558; // ANTI-PATTERN: Magic number
       if (backgroundIsScaledUp) {
         dog.style.top = `72vh`;
       } else {
-        dog.style.top = `${window.innerHeight - 200}px`;
+        dog.style.top = `${window.innerHeight - 200}px`; // ANTI-PATTERN: Magic number
       }
     }, 100);
     
@@ -205,43 +241,58 @@ window.onload = () => {
 
   createDog();
 
-  // duck generator function
+  /**
+   * Creates and manages a single duck in the game
+   * 
+   * Each duck has random movement patterns, flapping animation, and click-to-shoot functionality
+   * 
+   * ANTI-PATTERNS:
+   * - Multiple setInterval calls without cleanup
+   * - Random movement without collision detection
+   * - No duck lifecycle management
+   * - Direct DOM manipulation in event handlers
+   * 
+   * @returns {HTMLElement} The created duck element
+   */
   function createDuck() {
-    // create a div container for the duck
-    // add the 'duck' class to it
-    // append it to the body
+    // Create duck element
     const duck = document.createElement('div');
     duck.classList.add('duck');
     document.body.append(duck);
 
-    // toggle the 'flap' class on the duck every 200 ms (1/5 second)
+    // ANTI-PATTERN: setInterval without cleanup - memory leak
+    // Toggle the 'flap' class on the duck every 200 ms (1/5 second)
     setInterval(() => {
       duck.classList.toggle('flap');
     }, (Math.random() * 200) + 100);
 
-    // move the newly created duck to a random location
+    // Initialize duck position
     let medialPosition = Math.random() * window.innerHeight;
     let lateralPosition = Math.random() * window.innerWidth;
     duck.style.top = `${medialPosition}px`;
     duck.style.left = `${lateralPosition}px`;
 
-    // move the duck to a new location every second or so
-    // ducks keep moving by using setInterval instead of setTimeout
+    // ANTI-PATTERN: Another setInterval without cleanup
+    // Move the duck to a new location every second or so
+    // Ducks keep moving by using setInterval instead of setTimeout
     setInterval(() => {
       const newMedialPosition = Math.random() * window.innerHeight;
       const newLateralPosition = Math.random() * window.innerWidth;
-      // add and remove the 'right' class to the duck based on the direction the duck is flying, thus shifting the direction the duck is facing
+      
+      // Update duck direction based on movement
       if (lateralPosition < newLateralPosition) {
         duck.classList.add('right');
       } else {
         duck.classList.remove('right');
       }
-      // update position of duck to new coordinates
+      
+      // Update position
       duck.style.top = `${newMedialPosition}px`;
       duck.style.left = `${newLateralPosition}px`;
     }, (Math.random() * 1500) + 500);
 
-    // attach a 'click' event handler that adds the 'shot' class to the duck when you click on it!
+    // ANTI-PATTERN: Direct DOM manipulation in event handler
+    // Attach click event handler for shooting
     duck.addEventListener('click', (event) => {
       event.target.classList.add('shot');
       setTimeout(() => {
@@ -252,31 +303,42 @@ window.onload = () => {
 
     return duck;
   }
-  // read the DOM to see if there are any ducks left
 
+  /**
+   * Checks if all ducks have been shot and handles win condition
+   * 
+   * ANTI-PATTERNS:
+   * - Uses alert() for user interaction (blocking, poor UX)
+   * - No game state management
+   * - Hardcoded duck count range
+   * 
+   * @returns {void}
+   */
   function checkForWinner() {
     const ducks = document.querySelectorAll('.duck');
 
     console.log(ducks, ducks.length);
 
     if (ducks.length === 0) {
+      // ANTI-PATTERN: Blocking alert dialog
       alert('You Win! Press OK to play again.');
+      // ANTI-PATTERN: Hardcoded duck count range
       for (let i = 0; i < (Math.random() * 7) + 3; i++) {
         createDuck();
       }
     }
-
   }
 
   // BONUS: The ducks are moving pretty erratically, can you think
   // of a way to adjust the ducks speed based on how far needs to move?
 
-  // creates random number of ducks from 3 to 10
+  // ANTI-PATTERN: Hardcoded initial duck count
+  // Creates random number of ducks from 3 to 10
   for (let i = 0; i < (Math.random() * 7) + 3; i++) {
     setTimeout(() => {
       createDuck();
-    }, 6500);
+    }, 6500); // ANTI-PATTERN: Magic number delay
   }
 
-  // FIN. You win 1 trillion tokens.  Play the day away!
+  // FIN. You win 1 trillion tokens. Play the day away!
 };

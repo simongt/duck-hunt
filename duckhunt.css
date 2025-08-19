@@ -1,59 +1,91 @@
+/**
+ * Duck Hunt Game Styles
+ * 
+ * This CSS file contains all styling for the Duck Hunt game clone.
+ * Uses sprite-based animations and responsive design principles.
+ * 
+ * ANTI-PATTERNS:
+ * - No CSS custom properties (variables) for repeated values
+ * - Hardcoded pixel values throughout
+ * - No mobile-first responsive design
+ * - Missing accessibility considerations
+ * - No CSS organization or modular structure
+ */
+
+/* stylelint-disable */
+
+/* Global Styles */
 body,
 html {
+  /* stylelint-disable-next-line */
   width: 100vw;
   height: 100vh;
   margin: 0;
   background-image: url(images/background.png);
   background-size: cover;
   background-position: bottom;
+  
+  /* ANTI-PATTERN: Legacy image rendering properties for pixel art */
   image-rendering: optimizeSpeed;
   image-rendering: -moz-crisp-edges;
   image-rendering: -o-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   -ms-interpolation-mode: bicubic;
-  overflow: hidden;
+  
+  overflow: hidden; /* ANTI-PATTERN: Prevents scrolling, poor UX */
 }
 
+/* Duck Character Styles */
 .duck {
   position: absolute;
   background-image: url(images/duckhunt.png);
-  background-position: -100px -160px;
-  width: 110px;
+  background-position: -100px -160px; /* ANTI-PATTERN: Magic numbers */
+  width: 110px;  /* ANTI-PATTERN: Hardcoded dimensions */
   height: 115px;
-  transition: top 2s, left 2s;
+  transition: top 2s, left 2s; /* ANTI-PATTERN: Fixed transition duration */
   transition-timing-function: linear;
   background-repeat: no-repeat;
+  
+  /* ANTI-PATTERN: Missing cursor pointer for clickable element */
+  cursor: pointer;
 }
 
+/* Duck facing right direction */
 .duck.right {
-  background-position: -200px -160px;
+  background-position: -200px -160px; /* ANTI-PATTERN: Magic numbers */
 }
 
+/* Duck flapping animation - right direction */
 .duck.right.flap {
-  background-position: -300px -160px;
+  background-position: -300px -160px; /* ANTI-PATTERN: Magic numbers */
 }
 
+/* Duck default state (facing left) */
 .duck {
-  background-position: -100px -160px;
+  background-position: -100px -160px; /* ANTI-PATTERN: Duplicate rule */
 }
 
+/* Duck flapping animation - left direction */
 .duck.flap {
-  background-position: -430px -160px;
+  background-position: -430px -160px; /* ANTI-PATTERN: Magic numbers */
 }
 
+/* Duck shot state */
 .duck.shot {
   background-position: center;
   background-image: url(images/shot.png);
+  /* ANTI-PATTERN: No transition for shot state change */
 }
 
+/* Dog Character Styles */
 .dog {
   position: absolute;
   background-image: url(images/duckhunt.png);
-  background-position: -24px 0px;
-  width: 171px;
+  background-position: -24px 0px; /* ANTI-PATTERN: Magic numbers */
+  width: 171px;  /* ANTI-PATTERN: Hardcoded dimensions */
   height: 150px;
-  transition: top 0s, left 0s;
+  transition: top 0s, left 0s; /* ANTI-PATTERN: No transition for positioning */
   -webkit-transition-timing-function: ease-out;
      -moz-transition-timing-function: ease-out;
        -o-transition-timing-function: ease-out;
@@ -61,37 +93,43 @@ html {
   background-repeat: no-repeat;
 }
 
+/* Dog sniffing animation */
 .dog.sniff {
-  background-position: -207px 0px;
-  width: 171px;
+  background-position: -207px 0px; /* ANTI-PATTERN: Magic numbers */
+  width: 171px;  /* ANTI-PATTERN: Duplicate dimensions */
   height: 150px;
 }
 
+/* Dog lifting left leg animation */
 .dog.lift-left-leg {
-  background-position: -386px 0px;
-  width: 171px;
+  background-position: -386px 0px; /* ANTI-PATTERN: Magic numbers */
+  width: 171px;  /* ANTI-PATTERN: Duplicate dimensions */
   height: 150px;
 }
 
+/* Dog lifting right leg animation */
 .dog.lift-right-leg {
-  background-position: -567px 0px;
-  width: 171px;
+  background-position: -567px 0px; /* ANTI-PATTERN: Magic numbers */
+  width: 171px;  /* ANTI-PATTERN: Duplicate dimensions */
   height: 150px;
 }
 
+/* Dog surprise reaction */
 .dog.surprise {
-  background-position: -747px 0px;
-  width: 171px;
+  background-position: -747px 0px; /* ANTI-PATTERN: Magic numbers */
+  width: 171px;  /* ANTI-PATTERN: Duplicate dimensions */
   height: 150px;
 }
 
+/* Dog leaping into bushes */
 .dog.leap-into-bushes {
-  background-position: -932px 0px;
-  width: 120px;
+  background-position: -932px 0px; /* ANTI-PATTERN: Magic numbers */
+  width: 120px;  /* ANTI-PATTERN: Different width, no explanation */
   height: 150px;
 }
 
+/* Dog happy state (unused in current implementation) */
 .dog.happy {
-  background-position: -1063px 0px;
+  background-position: -1063px 0px; /* ANTI-PATTERN: Magic numbers */
 }
 
